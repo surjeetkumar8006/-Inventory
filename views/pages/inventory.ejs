@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/header.ejs') -%>
+<body class="bg-light">
+  <style>
+    .is-hidden{
+      display: none;
+    }
+  </style>
+    <%- include('../partials/nav.ejs') -%>
+
+    <div class="container">
+        <div class="row">
+           <div class="d-flex justify-content-between align-items-center">
+             <h3 class="p-3 mx-3 fw-bold">Inventory</h3>
+             <div class="d-flex">
+              <a href="/supplier/create"class="btn btn-sm btn-success text-white mx-2">Add new supplier</a>
+             <a href="/category/create"class="btn btn-sm btn-success text-white">Add new categories</a>
+             </div>
+           </div>
+           
+      
+           <div class="col-lg-8 mb-2" style="max-height: 450px; overflow-y: auto;">
+            <div class="card p-2">
+             <div class="d-flex justify-content-between align-items-center">
+               <h4 class="p-3 mb-2">Suppliers</h4>
+               <input type="text" class="form-control w-25" placeholder="search" onkeyup="search(this.value)">
+             </div>
+
+             <div class="flex-column">
+
+              <% suppliers.forEach((supplier) => { %>
+                 <!-- item -->
+                <div class="flex-column border bg-light border-info card p-3 mb-2 supplier-item-name" data-name="<%= supplier.name %>">
+                  <div class="d-flex justify-content-between">
+                    <div class="flex-column">
+                      <h5 class="fw-bold text-uppercase m-0"><%= supplier.name %></h5>
+                      <p class="text-secondary m-0" style="font-size: 13px;"><%= supplier.contact %></p>
+                      <p class="text-dark m-0" style="font-size: 10px;"><%= supplier.address %></p>
+                    </div>
+                    <div class="d-flex">
+                      <div class="dropdown text-end">
+                        <a href="#" class="d-block text-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                     
+                        </a>
+                        <ul class="dropdown-menu text-small bg-light">
+                          <li><a class="dropdown-item" href="supplier/edit/<%= supplier.id %>">Edit</a></li>
+                          <li><a class="dropdown-item" href="supplier/destroy/<%= supplier.id %>">Delete</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               <!-- item end -->
+              <%})%>
+                <% if(!suppliers.length) {%>
+                <p class="p-3 text-muted">No suppliers saved!</p>
+              <% } %>
+              </div>
+
+            </div>
+           </div>
+
+           <div class="col-lg-4" style="max-height: 450px; overflow-y: auto;">
+            <div class="card p-2">
+             <div class="d-flex justify-content-between align-items-center">
+               <h4 class="p-3 mb-2">Categories</h4>
+               <input type="text" class="form-control" placeholder="search">
+             </div>
+
+             <div class="flex-column">
+
+              <% categories.forEach((item) => { %>
+                 <!-- item -->
+                <div class="flex-column card bg-light text-secondary p-3 mb-2">
+                  <div class="d-flex justify-content-between">
+                    <div class="flex-column">
+                      <p class="m-0 text-uppercase"><%= item.category %></p>
+                    </div>
+                    <div class="d-flex">
+                      <a class="btn btn-close bg-white" href="category/destroy/<%= item.id %>"></a>
+                    </div>
+                  </div>
+                </div>
+               <!-- item end -->
+              <%})%>
+
+              <% if(!categories.length) {%>
+                <p class="p-3 text-muted">No categories saved!</p>
+              <% } %>
+              </div>
+
+            </div>
+           </div>
+
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') -%>
+</body>
+<script>
+  function search(value){
+    const supplier_item = document.querySelectorAll('.supplier-item-name')
+    
+    for (let i = 0; i < supplier_item.length; i++) {
+      // console.log(supplier_item[i].dataset.name)
+      if(supplier_item[i].dataset.name.includes(value.toLowerCase())){
+        supplier_item[i].classList.remove('is-hidden')
+      }else{
+        supplier_item[i].classList.add('is-hidden')
+      }
+    }
+  }
+</script>
+</html>
